@@ -1,69 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct fila {
+// Definição da estrutura da fila
+typedef struct {
     int *dados;
     int N, p, u;
 } fila;
 
+// Função para desenfileirar um elemento da fila
 int desenfileira(fila *f, int *y) {
+    // Verifica se a fila está vazia
     if (f->p == f->u) {
-        // A fila está vazia, não é possível desenfileirar
-        return 0;
+        return 0;  // Remoção mal sucedida, fila vazia
     }
 
-    *y = f->dados[f->p];
-    f->p = (f->p + 1) % f->N;
+    *y = f->dados[f->p];  // Salva o valor do elemento em y
+    f->p++;               // Atualiza o índice da frente da fila
 
-    // Redimensiona o vetor de dados se ele estiver menos de 1/4 cheio
-    if (f->u - f->p <= f->N / 4) {
-        int novoTamanho = f->N / 2; // Reduza o tamanho pela metade (você pode ajustar isso conforme necessário)
-        int *novoDados = (int *)malloc(novoTamanho * sizeof(int));
-
-        if (novoDados == NULL) {
-            fprintf(stderr, "Erro de alocação de memória ao redimensionar a fila.\n");
-            exit(1);
+    // Redimensiona o vetor se o tamanho atual for muito grande
+    if (f->u > 2 * f->p && f->u <= f->N / 4) {
+        int *novo_dados = (int *)malloc(f->N / 2 * sizeof(int));
+        if (novo_dados == NULL) {
+            // Se a alocação falhar, a operação de desenfileirar ainda é considerada bem sucedida
+            return 1;
         }
 
-        int i = 0;
-        while (f->p != f->u) {
-            novoDados[i] = f->dados[f->p];
-            f->p = (f->p + 1) % f->N;
-            i++;
+        for (int i = f->p, j = 0; i < f->u; i++, j++) {
+            novo_dados[j] = f->dados[i];
         }
-
-        f->p = 0;
-        f->u = i;
-        f->N = novoTamanho;
 
         free(f->dados);
-        f->dados = novoDados;
+        f->dados = novo_dados;
+        f->N /= 2;
+        f->p = 0;
+        f->u = f->u - f->p;
     }
 
-    return 1;
+    return 1;  // Remoção bem sucedida
 }
-
-// int main() {
-//     fila minhaFila;
-//     int tamanhoInicial = 10; // Tamanho inicial da fila
-
-//     minhaFila.dados = (int *)malloc(tamanhoInicial * sizeof(int));
-//     minhaFila.N = tamanhoInicial;
-//     minhaFila.p = 0;
-//     minhaFila.u = 0;
-
-//     // Inserir elementos na fila (suponha que já existe uma função para isso)
-
-//     int elemento;
-
-//     if (desenfileira(&minhaFila, &elemento)) {
-//         printf("Elemento desenfileirado: %d\n", elemento);
-//     } else {
-//         printf("Fila vazia, não foi possível desenfileirar.\n");
-//     }
-
-//     // Liberar a memória alocada para o vetor de dados
-//     free(minhaFila.dados);
-
-//     return 0;
-// }

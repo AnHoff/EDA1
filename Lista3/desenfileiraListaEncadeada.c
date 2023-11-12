@@ -1,43 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct fila {
-    int *dados;
-    int N, p, u;
-} fila;
+typedef struct celula
+{
+    int dado;
+    struct celula *prox;
+} celula;
 
-int desenfileira(fila *f, int *y) {
-    if (f->p == f->u) {
-        // A fila está vazia, não é possível desenfileirar
+int desenfileira(celula *f, int *y)
+{
+    if (f == NULL)
         return 0;
-    }
+        
+    celula *nova = f->prox;
+    *y = nova->dado;
+    f->prox = nova->prox;
+    free(nova);
 
-    *y = f->dados[f->p];
-    f->p = (f->p + 1) % f->N;
-    return 1;
+    return 0;
 }
-
-// int main() {
-//     fila minhaFila;
-//     int tamanhoMaximo = 10; // Tamanho máximo da fila
-
-//     minhaFila.dados = (int *)malloc(tamanhoMaximo * sizeof(int));
-//     minhaFila.N = tamanhoMaximo;
-//     minhaFila.p = 0;
-//     minhaFila.u = 0;
-
-//     // Inserir elementos na fila (suponha que já existe uma função para isso)
-
-//     int elemento;
-
-//     if (desenfileira(&minhaFila, &elemento)) {
-//         printf("Elemento desenfileirado: %d\n", elemento);
-//     } else {
-//         printf("Fila vazia, não foi possível desenfileirar.\n");
-//     }
-
-//     // Liberar a memória alocada para o vetor de dados
-//     free(minhaFila.dados);
-
-//     return 0;
-// }

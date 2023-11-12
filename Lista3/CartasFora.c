@@ -1,48 +1,44 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main() {
-    int n;
-    printf("Digite o valor de n: ");
-    scanf("%d", &n);
+void descarta_cartas(int n)
+{
+    int *cartas = malloc(sizeof(int) * n * 2);
+    int *cartas_descartadas = malloc(sizeof(int) * n);
+    int inicio = 0;
+    int fim = n - 1;
+    int fim_descarte = 0;
 
-    // Inicializa a pilha com as cartas numeradas de 1 a n
-    int *pilha = (int *)malloc(n * sizeof(int));
-    for (int i = 0; i < n; i++) {
-        pilha[i] = i + 1;
+    for (int i = 0; i < n; i++)
+        cartas[i] = i + 1;
+
+    for (int i = 1; i < n; i++)
+    {
+        cartas_descartadas[fim_descarte++] = cartas[inicio];
+        cartas[++fim] = cartas[inicio + 1];
+        inicio += 2;
     }
+    
+    printf("Cartas descartadas: %d", cartas_descartadas[0]);
 
-    // Inicializa a lista de cartas descartadas
-    int *descartadas = (int *)malloc((n - 1) * sizeof(int));
-    int topo = 0; // Índice do topo da pilha
-    int descartadasIndex = 0; // Índice para as cartas descartadas
+    for (int j = 1; j < fim_descarte; j++)
+        printf(", %d", cartas_descartadas[j]);
 
-    while (n >= 2) {
-        // Descarta a carta do topo
-        descartadas[descartadasIndex] = pilha[topo];
-        descartadasIndex++;
-
-        // Move a próxima carta para a base da pilha
-        topo = (topo + 1) % n;
-        n--;
-    }
-
-    // Imprime a sequência de cartas descartadas
-    printf("Cartas descartadas: ");
-    for (int i = 0; i < descartadasIndex; i++) {
-        printf("%d", descartadas[i]);
-        if (i < descartadasIndex - 1) {
-            printf(", ");
-        }
-    }
     printf("\n");
 
-    // A última carta da pilha é a única que resta
-    printf("Carta restante: %d\n", pilha[topo]);
+    printf("Carta restante: %d", cartas[inicio]);
 
-    // Libera a memória alocada
-    free(pilha);
-    free(descartadas);
+    printf("\n");
+}
+
+
+
+int main()
+{
+    int n;
+    scanf("%d", &n);
+
+    descarta_cartas(n);
 
     return 0;
 }
