@@ -10,7 +10,7 @@ Foi destinada a uma rápida revisão da linguagem C e não se mostra relevante p
 Compreende os conteúdos introdutórios da matéria. A lista está incompleta.
 
 ### Lista 3
-Está completa e foi 100% aceita (Accepted, 100p).
+Não lembro o que deu.
 
 ### Lista 4
-Abrange conteúdos com foco em ordenação. Está completa (Accepted, 100p).
+Abrange conteúdos com foco em ordenação. Está completa.
